@@ -1,0 +1,14 @@
+.active{
+    display: none;
+}
+
+.site-page-header{
+    font-size: 27px;
+    margin-bottom: 14px;
+}
+
+.news-preview-content{
+    margin: 17px 0px;
+    border: 1px solid #ece9e9;
+    padding-left: 12px;
+}
