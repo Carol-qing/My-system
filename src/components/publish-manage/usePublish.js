@@ -3,15 +3,15 @@ import axios from 'axios'
 import {notification} from 'antd'
 
 function usePublish(type){
-    const {username} = JSON.parse(localStorage.getItem("token"))
+    const {_id} = JSON.parse(localStorage.getItem("token"))
 
     const [dataSource, setdataSource] = useState([])
     useEffect(() => {
 
-        axios(`/news/${username}/${type}`).then(res=>{
+        axios(`/news/${_id}/${type}`).then(res=>{
             setdataSource(res.data)
         })
-    }, [username,type])
+    }, [_id,type])
 
 
 
@@ -25,7 +25,7 @@ function usePublish(type){
             notification.info({
                 message: `通知`,
                 description:
-                  `您可以到【发布管理/已经发布】中查看您的文章`,
+                  `您可以到【信息管理-个人文章状态】中查看您的文章`,
                 placement:"bottomRight"
             });
         })
@@ -53,7 +53,7 @@ function usePublish(type){
             notification.info({
                 message: `通知`,
                 description:
-                  `您已经删除了已下线的文章`,
+                  `您删除文章成功`,
                 placement:"bottomRight"
             });
         })

@@ -63,9 +63,13 @@ export default function NewsAdd(props) {
 
     useEffect(() => {
         axios.get("/categories").then(res => {
-            setCategoryList(res.data.filter(item => item.type!==3))
+            if (User.roleId.roleType === 1){
+                setCategoryList(res.data.filter(item => item.type !== 3))
+            }else {
+                setCategoryList(res.data.filter(item => item.type === 2))
+            }
         })
-    }, [])
+    }, [User])
 
     // 保存进后端
     const handleSave = (auditState) => {
@@ -77,17 +81,14 @@ export default function NewsAdd(props) {
             "author": User.username,
             "roleId": User.roleId._id,
             "auditState": auditState,
-            "publishState": 0,
-            "createTime": time,
-            "view": 0,
-            // "publishTime": 0
+            "createTime": time,   
         }).then(res=>{
             props.history.push(auditState===0?'/news-manage/draft':'/audit-manage/list')
 
             notification.info({
                 message: `通知`,
                 description:
-                  `您可以到${auditState===0?'草稿箱':'审核列表'}中查看您的提交`,
+                  `您可以到${auditState===0?'草稿箱':'审核列表'}中查看您的提交状态`,
                 placement:"bottomRight"
             });
         })
@@ -112,7 +113,6 @@ export default function NewsAdd(props) {
 
             <div style={{ marginTop: "50px" }}>
                 <div className={current === 0 ? '' : style.active}>
-
                     <Form
                         {...layout}
                         name="basic"

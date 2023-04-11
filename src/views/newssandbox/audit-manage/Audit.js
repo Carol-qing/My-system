@@ -7,7 +7,7 @@ export default function Audit() {
     const [LdataSource, setLdataSource] = useState([])
     const state = 1
     const lstate = 3
-    const {roleId:{roleType},region,username}  = JSON.parse(localStorage.getItem("token"))
+    const {_id,roleId:{roleType},region}  = JSON.parse(localStorage.getItem("token"))
     useEffect(()=>{
         const roleObj = {
             "1":"superadmin",
@@ -17,18 +17,18 @@ export default function Audit() {
         axios.get(`/news/aduit/${state}`).then(res => {
             const list = res.data
             setdataSource(roleObj[roleType]==="superadmin"?list:[
-                ...list.filter(item=>item.author===username),
-                ...list.filter(item=>item.region===region&& roleObj[item.roleId]==="editor")
+                ...list.filter(item=>item.userId === _id),
+                ...list.filter(item=>item.region === region && roleObj[item.roleId.roleType]==="editor")
             ])
         })
         axios.get(`/work/${lstate}`).then(res => {
             const list = res.data
             setLdataSource(roleObj[roleType]==="superadmin"?list:[
-                ...list.filter(item=>item.username===username),
-                ...list.filter(item=>item.region===region && roleObj[item.roleId]==="editor")
+                ...list.filter(item=>item.userId === _id),
+                ...list.filter(item=>item.region === region && roleObj[item.roleId.roleType]==="editor")
             ])
         })
-    },[roleType,region,username])
+    },[roleType, region, _id])
 
     const Acolumns = [
         {
@@ -118,7 +118,7 @@ export default function Audit() {
             notification.info({
                 message: `通知`,
                 description:
-                  `您可以到[审核管理/审核列表]中查看您的新闻的审核状态`,
+                  `您可以到[审核管理-审核列表]中查看文章审核状态`,
                 placement:"bottomRight"
             });
         })

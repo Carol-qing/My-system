@@ -90,7 +90,7 @@ export default function Leave(props) {
           notification.info({
               message: `通知`,
               description:
-                `申请请假成功！您可以到'审核列表'中查看您的提交`,
+                `申请请假成功！`,
               placement:"bottomRight"
           });
       })

@@ -15,10 +15,12 @@ export default function Record() {
   const [onbtndisabled, setOnBtnDisabled] = useState(false)
   const [offbtndisabled, setOffBtnDisabled] = useState(false)
   const [talllist, setTallList] = useState([])
+  const [alllist, setAllList] = useState([])
   const [load,setLoad] = useState(false)
 
   const [pieChart, setpieChart] = useState(null)
   const date =  moment().format('YYYY-MM-DD')
+  const month = moment().format('MM月DD日')
   const time = moment().format('HH:mm')
   const pieRef = useRef()
   const barRef = useRef()
@@ -43,18 +45,22 @@ export default function Record() {
             setCurrent(2)
           }
         }
-        })
-    },[_id, date,load])
+      })
+      axios.get(`/record/all/${date}/${_id}`).then(res => {
+        // console.log('ee',res.data);
+        setAllList(res)
+        renderBarView(_.groupBy(res.data, item => item.data[0].region))
+      })
+    },[_id, date, load])
 
     useEffect(() => {
       axios.get(`/record/${_id}`).then(res => {
-        renderBarView(_.groupBy(res.data, item => item.workonState))
         setTallList(res.data)
       })
       return () => {
           window.onresize = null
       }
-    }, [_id, load])
+    }, [_id, load,alllist])
 
     // 新建一个promise对象
     let newPromise = new Promise((resolve) => {
@@ -72,11 +78,11 @@ export default function Record() {
       // 指定图表的配置项和数据
       var option = {
           title: {
-              text: '出勤数据统计'
+              text: `各部门${month}出勤人数统计`
           },
           tooltip: {},
           legend: {
-              data: ['状态']
+              data: ['数量']
           },
           xAxis: {
               data: Object.keys(obj),
@@ -89,21 +95,22 @@ export default function Record() {
               minInterval: 1
           },
           series: [{
-              name: '次数',
+              name: '人数',
               type: 'bar',
               data: Object.values(obj).map(item => item.length)
           }]
       };
 
       // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
+       myChart.setOption(option);
 
 
-      window.onresize = () => {
+       window.onresize = () => {
           // console.log("resize")
           myChart.resize()
       }
     }
+    
     const renderPieView = () => {
       //数据处理工作
       var obj = _.groupBy(talllist,item=>recordList[item.workonState])
@@ -156,10 +163,12 @@ export default function Record() {
 
     }
 
+
     const onPanelChange = (value, mode) => {
       console.log(value.format('YYYY-MM-DD'), mode);
       // console.log(moment(value).format('YYYY-MM-DD HH:mm:ss')+"&&&"+mode)
     }
+
     const attendanceBtn = () => {
       setisVisabled(true)
     }
@@ -171,8 +180,8 @@ export default function Record() {
      * 0为未打卡，1为打卡成功，2为打卡迟到，3为缺勤
      */
     const workonOk = (item) => {
-      let startT = moment("09:00", "HH:mm");
-      let midT = moment("10:00", "HH:mm");
+      let startT = moment("08:00", "HH:mm");
+      let midT = moment("09:00", "HH:mm");
       let workonTime = moment(item, "HH:mm");
       let onState = workonTime.isAfter(startT, "hours"); //如果上班时间晚于九点,迟到状态2
       let midState = workonTime.isAfter(midT, "hours"); //如果上班时间晚于十点,缺勤状态3
@@ -281,13 +290,14 @@ export default function Record() {
             <div ref={pieRef} style={{
               width: '100%',
               height: "400px",
-              marginTop: "20px"
+              marginTop: "50px"
             }}></div>
             <div ref={barRef} style={{
               width: '100%',
-              height: "350px",
-              marginTop: "20px"
+              height: "300px",
+              marginTop: "0px"
             }}></div>
+            
           </Col>
           <Col span={12}>
             <Calendar 
@@ -310,11 +320,11 @@ export default function Record() {
             items={[
               {
                 title: '上班打卡',
-                description: "上班时间09:00" ,
+                description: "上班时间09:00,10:00后打卡记作缺勤" ,
               },
               {
                 title: '下班打卡',
-                description: "下班时间17:30",
+                description: "下班时间18:00",
               }
             ]}
           />

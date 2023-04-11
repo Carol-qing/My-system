@@ -3,13 +3,13 @@ import {Table,Tag} from 'antd'
 import axios from 'axios'
 export default function AuditList(props) {
     const [dataSource, setdataSource] = useState([])
-    const {username,roleId:{roleType}, region} = JSON.parse(localStorage.getItem("token"))
+    const {_id,roleId:{roleType}, region} = JSON.parse(localStorage.getItem("token"))
     useEffect(()=>{
       // auditState_ne：jsonserver中表示不等于0；_lte：小于等于
-        axios.get(`/news/list/${username}/${roleType}/${region}`).then(res=>{
+        axios.get(`/news/list/${_id}/${roleType}/${region}`).then(res=>{
             setdataSource(res.data)
         })
-    },[username,roleType,region])
+    },[_id,roleType,region])
 
 
     const columns = [

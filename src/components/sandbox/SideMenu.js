@@ -125,7 +125,9 @@ function SideMenu(props) {
             mode="inline"
             defaultSelectedKeys={selectKeys}
             defaultOpenKeys={openKeys}
-            // items={renderMenu(menu)}
+            style={{
+              height:600
+            }}
           >
             {renderMenu(menu)}
           </Menu>

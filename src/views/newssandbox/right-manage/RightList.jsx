@@ -27,7 +27,7 @@ export default function RightList() {
     confirm({
       title: '你确定要删除?',
       icon: <ExclamationCircleFilled />,
-      content: 'Some descriptions',
+      content: '删除该权限路径',
       onOk() {
         deleteMethod(item)
       },

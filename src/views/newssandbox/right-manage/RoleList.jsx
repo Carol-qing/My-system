@@ -67,7 +67,7 @@ export default function RoleList() {
     confirm({
       title: '你确定要删除?',
       icon: <BarsOutlined />,
-      content: 'Some descriptions',
+      // content: 'Some descriptions',
       onOk() {
         deleteMethod(item)
       },

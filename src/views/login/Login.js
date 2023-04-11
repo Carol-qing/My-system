@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Form, Input, message } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+// import Particles from "react-particles-js";
 import './Login.css'
 import axios from 'axios'
 
@@ -23,7 +24,8 @@ export default function Login(props) {
   }
 
   return (
-    <div style={{background:'rgb(35, 39, 65)', height:'100%', overflow:'hidden' }}>
+    <div  className='back'>
+      {/* <Particles height={document.documentElement.clientHeight}/> */}
       <div className='formContainer'>
         <div className='logintitle'>基于React的智能人事管理系统</div>
         <Form
@@ -52,7 +54,6 @@ export default function Login(props) {
                   placeholder="请输入您的密码"
               />
           </Form.Item>
-
           <Form.Item
             wrapperCol={{
               offset: 8,
@@ -60,7 +61,7 @@ export default function Login(props) {
             }}
           >
             <Button type="primary" htmlType="submit">
-              Submit
+              登录
             </Button>
           </Form.Item>
         </Form>

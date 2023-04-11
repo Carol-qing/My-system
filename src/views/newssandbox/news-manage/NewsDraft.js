@@ -6,13 +6,13 @@ const { confirm } = Modal
 export default function NewsDraft(props) {
     const [dataSource, setdataSource] = useState([])
 
-    const {username}  = JSON.parse(localStorage.getItem("token"))
+    const {_id,roleId:{roleType}}  = JSON.parse(localStorage.getItem("token"))
     useEffect(() => {
-        axios.get(`/news/${username}`).then(res => {
+        axios.get(`/news/${_id}`).then(res => {
             const list = res.data
             setdataSource(list)
         })
-    }, [username])
+    }, [_id])
 
     const columns = [
         {
@@ -54,12 +54,15 @@ export default function NewsDraft(props) {
         axios.patch(`/news/${id}`,{
             auditState:1
         }).then(res=>{
-            props.history.push('/audit-manage/list')
-
+            if(roleType === 1 ||roleType === 2){
+                props.history.push('/audit-manage/list')
+            }else {
+                props.history.push('/publish-manage/sunset')
+            }
             notification.info({
                 message: `通知`,
                 description:
-                  `您可以到${'审核列表'}中查看您的文章`,
+                  `您可以到【'审核列表'】中查看您的文章`,
                 placement:"bottomRight"
             });
         })

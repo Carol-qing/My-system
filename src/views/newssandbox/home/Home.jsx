@@ -43,7 +43,7 @@ export default function Home() {
     useEffect(() => {
         axios.get("/users").then(res => {
             // 把分类好的数据放进echart
-            console.log('r',res.data);
+            // console.log('r',res.data);
             renderBarView(_.groupBy(res.data, item => item.region))
             setallList(res.data)
             setMsg(res.data.filter(item => item._id === _id))
@@ -154,7 +154,7 @@ export default function Home() {
 
     const renderPieView = (obj) => {
         //数据处理工作
-        var currentList =allList.filter(item=>item._id===_id)
+        var currentList =allList.filter(item=>item.userId === _id)
         var groupObj = _.groupBy(currentList,item=>item.categoryId.title)
         var list = []
         for(var i in groupObj){
@@ -230,11 +230,9 @@ export default function Home() {
         })
     }
     const nameChange = useMemo(() => {
-        console.log('s',msg[0])
         if (msg) {
             return msg[0].username
         }else {
-            console.log('777');
             return username
         }
     }, [msg, username])
@@ -308,7 +306,7 @@ export default function Home() {
                     </Card>
                 </Col>
                 <Col span={8}>
-                    <Card title="用户最常浏览" bordered={true}>
+                    <Card title="员工最常浏览" bordered={true}>
                         <List
                             size="small"
                             // bordered

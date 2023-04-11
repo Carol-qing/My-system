@@ -3,13 +3,13 @@ import {Table,Tag} from 'antd'
 import axios from 'axios'
 export default function Sunset() {
     const [dataSource, setdataSource] = useState([])
-    const {username} = JSON.parse(localStorage.getItem("token"))
+    const {_id} = JSON.parse(localStorage.getItem("token"))
     useEffect(()=>{
       // auditState_ne：jsonserver中表示不等于0；_lte：小于等于
-        axios.get(`/news/statelist/${username}`).then(res=>{
+        axios.get(`/news/statelist/${_id}`).then(res=>{
             setdataSource(res.data)
         })
-    },[username])
+    },[_id])
 
 
     const columns = [

@@ -135,7 +135,7 @@ export default function UserList() {
     confirm({
       title: '你确定要删除?',
       icon: <ExclamationCircleFilled />,
-      content: 'Some descriptions',
+      content: '删除该员工',
       onOk() {
         deleteMethod(item)
       },
