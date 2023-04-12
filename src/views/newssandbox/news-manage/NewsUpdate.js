@@ -6,7 +6,6 @@ import NewsEditor from '../../../components/news-manage/NewsEditor';
 import { LeftOutlined } from '@ant-design/icons'
 const { Option } = Select;
 
-
 export default function NewsUpdate(props) {
     const [current, setCurrent] = useState(0)
     const [categoryList, setCategoryList] = useState([])
@@ -19,15 +18,15 @@ export default function NewsUpdate(props) {
         {
             title: '基本信息',
             description: '文章标题，文章分类'
-          },
-          {
+        },
+        {
             title: '文章内容',
             description: '文章主体内容',
-          },
-          {
+        },
+        {
             title: '文章提交',
             description: '草稿箱或提交审核',
-          },
+        },
     ]
     const handleNext = () => {
         if (current === 0) {
@@ -55,10 +54,9 @@ export default function NewsUpdate(props) {
     }
 
     const NewsForm = useRef(null)
-
     useEffect(() => {
         axios.get("/categories").then(res => {
-            setCategoryList(res.data.filter(item => item.type===2))
+            setCategoryList(res.data.filter(item => item.type === 2))
         })
     }, [])
 
@@ -73,22 +71,21 @@ export default function NewsUpdate(props) {
 
             setContent(content)
         })
-    }, [props.match.params.id])
+    }, [props])
 
 
     const handleSave = (auditState) => {
-
         axios.patch(`/news/${props.match.params.id}`, {
             ...formInfo,
             "content": content,
             "auditState": auditState,
         }).then(res=>{
-            props.history.push(auditState===0?'/news-manage/draft':'/audit-manage/list')
+            props.history.push(auditState === 0?'/news-manage/draft':'/audit-manage/list')
 
             notification.info({
                 message: `通知`,
                 description:
-                  `您可以到${auditState===0?'草稿箱':'审核列表'}中查看您的文章`,
+                  `您可以到${auditState === 0?'草稿箱':'审核列表'}中查看您的文章`,
                 placement:"bottomRight"
             });
         })

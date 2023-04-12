@@ -16,9 +16,8 @@ export default function Audit() {
         }
         axios.get(`/news/aduit/${state}`).then(res => {
             const list = res.data
-            setdataSource(roleObj[roleType]==="superadmin"?list:[
-                ...list.filter(item=>item.userId === _id),
-                ...list.filter(item=>item.region === region && roleObj[item.roleId.roleType]==="editor")
+            setdataSource(roleObj[roleType]==="superadmin"? list:[
+                ...list.filter(item=>item.userId!==_id && item.region === region && roleObj[item.roleId.roleType]==="editor")
             ])
         })
         axios.get(`/work/${lstate}`).then(res => {
@@ -133,7 +132,7 @@ export default function Audit() {
             notification.info({ 
                 message: `通知`,
                 description:
-                  `您可以到[请假信息列表]中查看您的请假条审核状态`,
+                  `您可以到[请假记录]中查看请假条审核状态`,
                 placement:"bottomRight"
             });
         })

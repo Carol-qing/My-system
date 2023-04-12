@@ -40,6 +40,7 @@ export default function NewsDraft(props) {
                     <Button danger shape="circle" icon={<DeleteOutlined />} onClick={() => confirmMethod(item)} />
                     &nbsp;&nbsp;
                     <Button shape="circle" icon={<EditOutlined />} onClick={()=>{
+                        console.log('rr',item._id);
                         props.history.push(`/news-manage/update/${item._id}`)
                     }}/>
                     &nbsp;&nbsp;
@@ -53,11 +54,11 @@ export default function NewsDraft(props) {
     const handleCheck = (id)=>{
         axios.patch(`/news/${id}`,{
             auditState:1
-        }).then(res=>{
+        }).then(res => {
             if(roleType === 1 ||roleType === 2){
                 props.history.push('/audit-manage/list')
             }else {
-                props.history.push('/publish-manage/sunset')
+                props.history.push('/home')
             }
             notification.info({
                 message: `通知`,
